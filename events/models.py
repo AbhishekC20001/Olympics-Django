@@ -13,14 +13,30 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
+class Athlete(models.Model):
+    #athlete_id = models.IntegerField(primary_key=True)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="country")
+    first_name = models.CharField(max_length=64)
+    last_name = models.CharField(max_length=64)
+    gender = models.CharField(max_length=1)
+    dob = models.DateField(null=True)
+    age = models.IntegerField(null=True)
+    #events = models.ForeignKey(Event, on_delete=models.CASCADE,null=True)
+    #events = models.ForeignKey(Event, on_delete=models.CASCADE)
+    #def is_valid_athlete(self):
+        #return (condition1) and (condition2)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.first_name
 
 class Event(models.Model):
     #event_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=64)
     stadium = models.CharField(max_length=64)
     area = models.CharField(max_length=64)
-    athletes = models.ManyToManyField(settings.AUTH_USER_MODEL,
-        through='Athlete', related_name='athlete_list')
+    athletes = models.ManyToManyField(Athlete, related_name='athlete_list')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     #athletes = models.ForeignKey(Athlete, on_delete=models.CASCADE,null=True)
     important = models.ManyToManyField(settings.AUTH_USER_MODEL,
@@ -37,23 +53,7 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
-class Athlete(models.Model):
-    #athlete_id = models.IntegerField(primary_key=True)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="country")
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    gender = models.CharField(max_length=1)
-    dob = models.DateField(null=True)
-    age = models.IntegerField(null=True)
-    events = models.ForeignKey(Event, on_delete=models.CASCADE,null=True)
-    #events = models.ForeignKey(Event, on_delete=models.CASCADE)
-    #def is_valid_athlete(self):
-        #return (condition1) and (condition2)
 
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-
-    def __str__(self):
-        return self.first_name
 
 class Comment(models.Model) :
     text = models.TextField(

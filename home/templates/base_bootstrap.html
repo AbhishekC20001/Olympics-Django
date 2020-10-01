@@ -7,7 +7,7 @@
 
 {% load static %}
 
-<link rel="shortcut icon" href="{% static './favicon.ico' %}" />
+<link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
  <link rel="stylesheet"
      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
      crossorigin="anonymous">
@@ -37,7 +37,7 @@
 {% block head %} {% endblock %}
 
  </head>
-<body>
+<body id='every'>
 <div class="container">
 {% block navbar %} {% endblock %}
 {% block welcome %} {% endblock %}

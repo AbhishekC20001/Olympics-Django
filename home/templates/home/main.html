@@ -1,9 +1,13 @@
+{% load static %}
 <html>
 <head>
+
     <title>{{ settings.APP_NAME }}</title>
+  <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
 </head>
-<body>
-    <h1>Welcome to {{ settings.APP_NAME }}</h1>
+
+<body id="bg" style="background-image: url('{% static "images/stadium.jpg" %}')";>
+    <h1 id="wel">Welcome to {{ settings.APP_NAME }}</h1>
     <p>
     Hello Fans.
     </p>

@@ -46,10 +46,10 @@
         <br/>
         {% endif %}
         <div style="left:10px">
-            {% if event.name|length < 100 %}
-                {{ event.name }}
+            {% if event.stadium|length < 100 %}
+                {{ event.stadium }}
             {% else %}
-                {{ event.name|slice:"0:99" }}
+                {{ event.stadium|slice:"0:99" }}
                 <a href="{% url 'events:event_detail'  event.id %}">...</a>
             {% endif %}
         </div>
