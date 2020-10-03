@@ -26,7 +26,7 @@
         <a href="#" onclick=
             "impPost('{% url 'events:event_unimportant' event.id %}', {{ event.id }} );return false;"
             {% if event.id not in important %} style="display: none;" {% endif %}
-            id="important_star_{{event.id}}">
+            id="imp_star_{{event.id}}">
         <span class="fa-stack" style="vertical-align: middle;">
         <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
         <i class="fa fa-star-o fa-stack-1x"></i>

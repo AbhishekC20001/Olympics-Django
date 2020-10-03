@@ -1,4 +1,4 @@
-from events.models import Event, Comment, Imp
+from events.models import Event, Comment, Imp, Athlete, Participation
 from events.owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
 from events.forms import CreateForm, CommentForm
 from django.views import View
@@ -57,11 +57,16 @@ class EventListView(OwnerListView):
 class EventDetailView(OwnerDetailView):
     model = Event
     template_name = "events/event_detail.html"
+    #athletes = list()
     def get(self, request, pk) :
         x = Event.objects.get(id=pk)
         comments = Comment.objects.filter(event=x).order_by('-updated_at')
         comment_form = CommentForm()
-        context = { 'event' : x, 'comments': comments, 'comment_form': comment_form }
+        #rows = request.x.athlete_list.values('id')
+        athletes = Participation.objects.filter(event=x)
+
+        #athletes = Participation.objects.filter(event=x)
+        context = { 'event' : x, 'comments': comments, 'comment_form': comment_form, 'athlete_list': athletes }
         return render(request, self.template_name, context)
 
 
@@ -132,7 +137,7 @@ class CommentCreateView(LoginRequiredMixin, View):
 
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
-    template_name = "events/event_delete.html"
+    template_name = "events/comment_delete.html"
 
     # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
     def get_success_url(self):

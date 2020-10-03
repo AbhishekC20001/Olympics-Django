@@ -17,7 +17,7 @@ class CreateForm(forms.ModelForm):
     # Hint: this will need to be changed for use in the ads application :)
     class Meta:
         model = Event
-        fields = ['name', 'stadium','athletes','event_at', 'picture']  # Picture is manual
+        fields = ['name', 'stadium','event_at', 'picture']  # Picture is manual
 
     # Validate the size of the picture
     def clean(self) :
