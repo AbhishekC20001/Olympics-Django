@@ -12,35 +12,30 @@ from django.db.models import Q
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
+
 
 class EventListView(OwnerListView):
     model = Event
-    # By convention:
+
     template_name = "events/event_list.html"
     def get(self, request) :
         event_list = Event.objects.all()
         important = list()
         if request.user.is_authenticated:
-            # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
             rows = request.user.important_events.values('id')
-            # favorites = [2, 4, ...] using list comprehension
             important = [ row['id'] for row in rows ]
 
         strval =  request.GET.get("search", False)
         if strval :
-            # Simple title-only search
-            # objects = Post.objects.filter(title__contains=strval).select_related().order_by('-updated_at')[:10]
-
-            # Multi-field search
             query = Q(name__contains=strval)
             query.add(Q(stadium__contains=strval), Q.OR)
             objects = Event.objects.filter(query).select_related().order_by('-updated_at')[:10]
         else :
-            # try both versions with > 4 posts and watch the queries that happen
             objects = Event.objects.all().order_by('-updated_at')[:10]
-            # objects = Post.objects.select_related().all().order_by('-updated_at')[:10]
 
-        # Augment the post_list
         for obj in objects:
             obj.natural_updated = naturaltime(obj.updated_at)
 
@@ -49,9 +44,6 @@ class EventListView(OwnerListView):
 
         dump_queries()
         return retval;
-
-
-
 
 
 class EventDetailView(OwnerDetailView):
@@ -70,8 +62,6 @@ class EventDetailView(OwnerDetailView):
         return render(request, self.template_name, context)
 
 
-
-
 class EventCreateView(LoginRequiredMixin, View):
     template_name = 'events/event_form.html'
     success_url = reverse_lazy('events:all')
@@ -87,11 +77,11 @@ class EventCreateView(LoginRequiredMixin, View):
             ctx = {'form' : form}
             return render(request, self.template_name, ctx)
 
-        # Add owner to the model before saving
         event = form.save(commit=False)
         event.owner = self.request.user
         event.save()
         return redirect(self.success_url)
+
 
 class EventUpdateView(LoginRequiredMixin, View):
     template_name = 'events/event_form.html'
@@ -116,9 +106,9 @@ class EventUpdateView(LoginRequiredMixin, View):
         return redirect(self.success_url)
 
 
-
 class EventDeleteView(OwnerDeleteView):
     model = Event
+
 
 def stream_file(request, pk) :
     event = get_object_or_404(Event, id=pk)
@@ -128,6 +118,7 @@ def stream_file(request, pk) :
     response.write(event.picture)
     return response
 
+
 class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk) :
         e = get_object_or_404(Event, id=pk)
@@ -135,18 +126,15 @@ class CommentCreateView(LoginRequiredMixin, View):
         comment.save()
         return redirect(reverse('events:event_detail', args=[pk]))
 
+
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
     template_name = "events/comment_delete.html"
 
-    # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
     def get_success_url(self):
         event = self.object.event
         return reverse('events:event_detail', args=[event.id])
 
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.db.utils import IntegrityError
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AddImportantView(LoginRequiredMixin, View):
@@ -155,10 +143,11 @@ class AddImportantView(LoginRequiredMixin, View):
         t = get_object_or_404(Event, id=pk)
         imp = Imp(user=request.user, event=t)
         try:
-            imp.save()  # In case of duplicate key
+            imp.save()
         except IntegrityError as e:
             pass
         return HttpResponse()
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteImportantView(LoginRequiredMixin, View):

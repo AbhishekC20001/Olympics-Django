@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Events</h1>
 <div style="float:right">
-<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+
 <form>
   <input type="text" placeholder="Search.." name="search"
   {% if search %} value="{{ search }}" {% endif %}
@@ -22,7 +22,7 @@
         <a href="{% url 'events:event_delete' event.id %}">Delete</a>)
         {% endif %}
         {% if user.is_authenticated %}
-        <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
+
         <a href="#" onclick=
             "impPost('{% url 'events:event_unimportant' event.id %}', {{ event.id }} );return false;"
             {% if event.id not in important %} style="display: none;" {% endif %}
@@ -32,7 +32,7 @@
         <i class="fa fa-star-o fa-stack-1x"></i>
         </span>
         </a>
-        <!-- the second href -->
+
         <a href="#" onclick=
              "impPost('{% url 'events:event_important' event.id %}', {{ event.id }} );return false;"
             {% if event.id in important %} style="display: none;" {% endif %}

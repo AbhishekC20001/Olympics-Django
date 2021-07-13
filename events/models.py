@@ -33,6 +33,7 @@ class Athlete(models.Model):
     def __str__(self):
         return self.first_name+' '+self.last_name
 
+
 class Event(models.Model):
     #event_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=64)
@@ -76,15 +77,15 @@ class Comment(models.Model) :
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    # Shows up in the admin list
+
     def __str__(self):
         if len(self.text) < 15 : return self.text
+
 
 class Imp(models.Model) :
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    # https://docs.djangoproject.com/en/3.0/ref/models/options/#unique-together
     class Meta:
         unique_together = ('event', 'user')
 
