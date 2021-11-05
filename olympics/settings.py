@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'home.apps.HomeConfig',
     'events.apps.EventsConfig',
+    'eventapis.apps.EventapisConfig',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

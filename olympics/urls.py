@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include('events.urls')),
     path('', include('home.urls')),
+    path('eventapis/', include('eventapis.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # Keep
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # Keep
 
