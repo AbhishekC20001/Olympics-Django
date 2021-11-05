@@ -12,6 +12,9 @@
       <li {% if request.get_full_path == events %}class="active"{% endif %}>
           <a href="{% url 'events:all' %}">Events</a></li>
     </ul>
+    <ul class="nav navbar-nav">
+          <a href="{% url 'events:event_news' %}">Event News</a>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
         <li>

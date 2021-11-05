@@ -15,7 +15,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db.utils import IntegrityError
-
+from json import dumps
+import requests
 
 class EventListView(OwnerListView):
     model = Event
@@ -160,3 +161,13 @@ class DeleteImportantView(LoginRequiredMixin, View):
             pass
 
         return HttpResponse()
+
+
+
+def sendNewsData(request):
+
+    receive = requests.get('https://newsapi.org/v2/top-headlines?country=us&category=sports&apiKey=2680777f2b434adc879881bd3f666169')
+    dataDictionary = receive.json()['articles']
+
+    dataJSON = dumps(dataDictionary)
+    return render(request, 'events/event_news.html', {'data': dataJSON})

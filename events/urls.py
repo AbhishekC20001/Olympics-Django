@@ -24,4 +24,6 @@ urlpatterns = [
     views.AddImportantView.as_view(), name='event_important'),
     path('event/<int:pk>/unimportant',
     views.DeleteImportantView.as_view(), name='event_unimportant'),
+    path('event/news',
+    views.sendNewsData, name='event_news'),
 ]
