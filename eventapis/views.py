@@ -3,13 +3,14 @@ from rest_framework import generics
 from rest_framework.response import Response
 from .serializers import *
 from events.models import *
-
+from rest_framework.permissions import IsAuthenticated
 
 class CountryCreateApi(generics.CreateAPIView):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
 
 class EventsApi(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, )
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
