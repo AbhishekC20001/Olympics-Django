@@ -171,3 +171,22 @@ def sendNewsData(request):
 
     dataJSON = dumps(dataDictionary)
     return render(request, 'events/event_news.html', {'data': dataJSON})
+
+
+def sendHotels(request):
+
+    url = "https://hotels4.p.rapidapi.com/locations/v2/search"
+
+    querystring = {"query":"new york","locale":"en_US","currency":"USD"}
+
+    headers = {
+        'x-rapidapi-host': "hotels4.p.rapidapi.com",
+        'x-rapidapi-key': "0c32763019mshee9f7664ff5e966p1ec273jsncd47401bf285"
+        }
+
+    receive = requests.request("GET", url, headers=headers, params=querystring)
+    # print(receive.json())
+    dataDictionary = receive.json()['suggestions'][1]['entities']
+
+    dataJSON = dumps(dataDictionary)
+    return render(request, 'events/event_hotels.html', {'data': dataJSON})

@@ -26,4 +26,6 @@ urlpatterns = [
     views.DeleteImportantView.as_view(), name='event_unimportant'),
     path('event/news',
     views.sendNewsData, name='event_news'),
+    path('event/hotels',
+    views.sendHotels, name='event_hotels'),
 ]

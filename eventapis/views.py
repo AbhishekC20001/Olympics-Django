@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializers import *
 from events.models import *
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 class CountryCreateApi(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, )
@@ -28,4 +29,4 @@ class CommentDeleteApi(generics.DestroyAPIView):
     def destroy(self, *args, **kwargs):
         serializer = self.get_serializer(self.get_object())
         super().destroy(*args, **kwargs)
-        return response.Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
